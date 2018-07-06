@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import life.knowledge4.videotrimmer.K4LVideoTrimmer;
 import life.knowledge4.videotrimmer.interfaces.OnK4LVideoListener;
 import life.knowledge4.videotrimmer.interfaces.OnTrimVideoListener;
@@ -35,7 +39,7 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
 
         mVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
         if (mVideoTrimmer != null) {
-            mVideoTrimmer.setMaxDuration(10);
+            mVideoTrimmer.setMaxDuration(100);
             mVideoTrimmer.setOnTrimVideoListener(this);
             mVideoTrimmer.setOnK4LVideoListener(this);
             //mVideoTrimmer.setDestinationPath("/storage/emulated/0/DCIM/CameraCustom/");
@@ -51,6 +55,25 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
 
     @Override
     public void getResult(final Uri uri) {
+        int duration = mVideoTrimmer.getmTimeVideo();
+        String date_taken = mVideoTrimmer.getDate_taken();
+        date_taken = date_taken.replace(":", "");
+        date_taken = date_taken.replace(".", "");
+        date_taken = date_taken.replace("-", "");
+        date_taken = date_taken.replace("/", "");
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+
+        try {
+            Date date = format.parse(date_taken);
+            System.out.println(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Toast.makeText(TrimmerActivity.this, duration+" seconds" + ", " + date_taken, Toast
+                .LENGTH_SHORT);
+
         mProgressDialog.cancel();
 
         runOnUiThread(new Runnable() {

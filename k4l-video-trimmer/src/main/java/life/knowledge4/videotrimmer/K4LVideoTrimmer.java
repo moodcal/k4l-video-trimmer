@@ -92,6 +92,17 @@ public class K4LVideoTrimmer extends FrameLayout {
     private OnK4LVideoListener mOnK4LVideoListener;
 
     private int mDuration = 0;
+
+    public String getDate_taken() {
+        return date_taken;
+    }
+
+    private String date_taken;
+
+    public int getmTimeVideo() {
+        return mTimeVideo;
+    }
+
     private int mTimeVideo = 0;
     private int mStartPosition = 0;
     private int mEndPosition = 0;
@@ -588,6 +599,10 @@ public class K4LVideoTrimmer extends FrameLayout {
         mVideoView.requestFocus();
 
         mTimeLineView.setVideo(mSrc);
+
+        MediaMetadataRetriever r = new MediaMetadataRetriever();
+        r.setDataSource(mSrc.getPath());
+        date_taken = r.extractMetadata( MediaMetadataRetriever.METADATA_KEY_DATE);
     }
 
     private static class MessageHandler extends Handler {
